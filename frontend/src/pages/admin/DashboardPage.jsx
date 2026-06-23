@@ -62,6 +62,11 @@ export default function AdminDashboard() {
   return (
     <div className="space-y-6">
       <div className="page-header">
+        <p style={{ color: 'black' }}>"
+          ...
+          <br></br>
+          "
+        </p>
         <h1 className="page-title" style={{ color: 'white' }}> Dashboard</h1>
         <p className="page-subtitle">Overview and analytics</p><br></br>
       </div>
@@ -107,20 +112,20 @@ export default function AdminDashboard() {
           {
             label: 'Employees',
             href: '/admin/employees',
-            rotation: -8,
-            hoverStyles: { bgColor: '#a855f7', textColor: '#ffffff' } // Purple
+            rotation: 0, /* <-- Changed from -8 */
+            hoverStyles: { bgColor: '#a855f7', textColor: '#ffffff' }
           },
           {
             label: 'Questions',
             href: '/admin/questions',
             rotation: 0,
-            hoverStyles: { bgColor: '#10b981', textColor: '#ffffff' } // Emerald
+            hoverStyles: { bgColor: '#10b981', textColor: '#ffffff' }
           },
           {
             label: 'Analytics',
             href: '/admin/analytics',
-            rotation: 8,
-            hoverStyles: { bgColor: '#f59e0b', textColor: '#ffffff' } // Amber
+            rotation: 0, /* <-- Changed from 8 */
+            hoverStyles: { bgColor: '#f59e0b', textColor: '#ffffff' }
           }
         ]}
       />
