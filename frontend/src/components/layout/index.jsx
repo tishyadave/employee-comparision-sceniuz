@@ -82,9 +82,9 @@ function TopBar({ links }) {
             items={pillItems}
             activeHref={location.pathname}
             baseColor="#000000"
-            pillColor="#1a1a2e"
+            pillColor="#eeeeee"
             hoveredPillTextColor="#ffffff"
-            pillTextColor="#ffffff"
+            pillTextColor="#000000"
             initialLoadAnimation={false}
           />
         </div>

@@ -98,6 +98,15 @@
     overflow: hidden;
 }
 
+.pill.is-active {
+    background: var(--base, #000) !important;
+    color: var(--hover-text, #fff) !important;
+}
+
+.pill.is-active .pill-label {
+    color: var(--hover-text, #fff) !important;
+}
+
 .pill .hover-circle {
     position: absolute;
     left: 50%;

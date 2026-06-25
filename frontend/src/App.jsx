@@ -6,20 +6,20 @@ import { EmployeeLayout, AdminLayout } from "./components/layout";
 import { PageLoader } from "@/components/ui";
 
 // ── Lazy-loaded pages ──────────────────────────────────────────────────────────
-const LoginPage = lazy(() => import("@/pages/auth/LoginPage"));
+const LoginPage = lazy(() => import("@/pages/auth/LoginPage.draft"));
 
 // Employee
-const EmployeeDashboard = lazy(() => import("@/pages/employee/DashboardPage"));
-const SelfAssessmentPage = lazy(() => import("@/pages/employee/SelfAssessmentPage"));
-const TestPage = lazy(() => import("@/pages/employee/TestPage"));
-const ResultsPage = lazy(() => import("@/pages/employee/ResultsPage"));
-const LeaderboardPage = lazy(() => import("@/pages/employee/LeaderboardPage"));
+const EmployeeDashboard = lazy(() => import("@/pages/employee/DashboardPage.draft"));
+const SelfAssessmentPage = lazy(() => import("@/pages/employee/SelfAssessmentPage.draft"));
+const TestPage = lazy(() => import("@/pages/employee/TestPage.draft"));
+const ResultsPage = lazy(() => import("@/pages/employee/ResultsPage.draft"));
+const LeaderboardPage = lazy(() => import("@/pages/employee/LeaderboardPage.draft"));
 
 // Admin
-const AdminDashboard = lazy(() => import("@/pages/admin/DashboardPage"));
-const EmployeesPage = lazy(() => import("@/pages/admin/EmployeesPage"));
-const QuestionsPage = lazy(() => import("@/pages/admin/QuestionsPage"));
-const AnalyticsPage = lazy(() => import("@/pages/admin/AnalyticsPage"));
+const AdminDashboard = lazy(() => import("@/pages/admin/DashboardPage.draftq"));
+const EmployeesPage = lazy(() => import("@/pages/admin/EmployeesPage.draft"));
+const QuestionsPage = lazy(() => import("@/pages/admin/QuestionsPage.draft"));
+const AnalyticsPage = lazy(() => import("@/pages/admin/AnalyticsPage.draft"));
 
 // ── Wrappers ───────────────────────────────────────────────────────────────────
 function EmpPage({ children }) {
