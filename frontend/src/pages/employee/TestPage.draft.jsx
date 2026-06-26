@@ -193,7 +193,7 @@ export default function TestPage() {
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '16px', marginBottom: '32px' }}>
           {[
             { label: "Questions", value: questions.length },
-            { label: "Duration", value: "30 min" },
+            { label: "Duration", value: "60 min" },
             { label: "Attempts", value: "1 only" },
           ].map((s) => (
             <div key={s.label} style={{ backgroundColor: 'rgba(255,255,255,0.03)', borderRadius: '12px', padding: '16px', border: '1px solid rgba(255,255,255,0.05)' }}>

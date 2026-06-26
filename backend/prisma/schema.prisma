@@ -42,20 +42,25 @@ model User {
 }
 
 model SelfAssessment {
-  id                    String   @id @default(uuid())
-  userId                String   @unique @map("user_id")
-  htmlRating            Int      @map("html_rating")
-  cssRating             Int      @map("css_rating")
-  jsRating              Int      @map("js_rating")
-  reactRating           Int      @map("react_rating")
-  communicationRating   Int      @map("communication_rating")
-  problemSolvingRating  Int      @map("problem_solving_rating")
-  overallPercentage     Float    @map("overall_percentage")
-  completedAt           DateTime @default(now()) @map("completed_at")
+  id                String   @id @default(cuid())
+  userId            String   @unique
+  overallPercentage Float
+  createdAt         DateTime @default(now())
 
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user    User              @relation(fields: [userId], references: [id])
+  ratings SubtopicRating[]
+}
 
-  @@map("self_assessments")
+model SubtopicRating {
+  id               String @id @default(cuid())
+  selfAssessmentId String
+  topicId          String  // e.g. "dax_basic"
+  subtopicId       String  // e.g. "dax_aggregation"
+  rating           Int     // 1–5
+
+  selfAssessment SelfAssessment @relation(fields: [selfAssessmentId], references: [id])
+
+  @@unique([selfAssessmentId, subtopicId])
 }
 
 model Question {

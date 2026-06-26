@@ -13,10 +13,10 @@ const getAllEmployees = async (req, res, next) => {
       role: "EMPLOYEE",
       OR: search
         ? [
-            { name: { contains: search, mode: "insensitive" } },
-            { email: { contains: search, mode: "insensitive" } },
-            { department: { contains: search, mode: "insensitive" } },
-          ]
+          { name: { contains: search, mode: "insensitive" } },
+          { email: { contains: search, mode: "insensitive" } },
+          { department: { contains: search, mode: "insensitive" } },
+        ]
         : undefined,
     };
 
@@ -29,7 +29,7 @@ const getAllEmployees = async (req, res, next) => {
           email: true,
           department: true,
           createdAt: true,
-          selfAssessment: { select: { overallPercentage: true, completedAt: true } },
+          selfAssessment: { select: { overallPercentage: true } },
           testAttempts: {
             where: { status: { in: ["SUBMITTED", "AUTO_SUBMITTED"] } },
             select: { scorePercentage: true, submittedAt: true },

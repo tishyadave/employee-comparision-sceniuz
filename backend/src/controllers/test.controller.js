@@ -2,7 +2,7 @@ const prisma = require("../utils/prisma");
 const { sendSuccess, sendError } = require("../utils/response");
 const { calculateCAI } = require("../utils/scoring");
 
-const TEST_DURATION_SECONDS = 30 * 60; // 30 minutes
+const TEST_DURATION_SECONDS = 60 * 60; // 30 minutes
 
 // ── Start test ─────────────────────────────────────────────────────────────────
 const startTest = async (req, res, next) => {
