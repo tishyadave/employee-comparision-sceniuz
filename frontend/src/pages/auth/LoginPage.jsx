@@ -16,6 +16,7 @@ export default function LoginPage() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState(false);
+  const [userRole, setUserRole] = useState(null);
 
   // Greeting cycle
   const greetings = [
@@ -43,6 +44,9 @@ export default function LoginPage() {
     try {
       const user = await login(form.email, form.password);
       setSuccess(true);
+      // Store user role for later navigation
+      setUserRole(user.role);
+
     } catch (err) {
       setError(
         err?.response?.data?.message ||
@@ -53,6 +57,19 @@ export default function LoginPage() {
       setLoading(false);
     }
   };
+
+  // Navigate after showing toast
+  useEffect(() => {
+    let timer;
+    if (success) {
+      timer = setTimeout(() => {
+        navigate(userRole === "ADMIN" ? "/admin/dashboard" : "/dashboard", { replace: true });
+        setSuccess(false);
+        setUserRole(null);
+      }, 2500);
+    }
+    return () => clearTimeout(timer);
+  }, [success, userRole, navigate]);
 
   return (
     <div className={styles.page}>
@@ -143,7 +160,7 @@ export default function LoginPage() {
               </div>
             </div>
 
-            {error && <p className={styles.error}>{error}</p>}
+            {error && (<p className={styles.error}>{error}</p>)}
 
             <button
               type="submit"
@@ -153,71 +170,61 @@ export default function LoginPage() {
               {loading ? "Signing in…" : "Sign In"}
             </button>
           </form>
+
+          {success && (
+            <>
+              <style>{`\n                @keyframes slideInUp {\n                  0% { opacity: 0; transform: translateY(40px) scale(0.9); }\n                  100% { opacity: 1; transform: translateY(0) scale(1); }\n                }\n              `}</style>
+              <div style={{
+                position: "fixed",
+                bottom: "30px",
+                right: "30px",
+                zIndex: 99999,
+                animation: "slideInUp 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards"
+              }}>
+                <BorderGlow
+                  animated={true}
+                  glowColor="270 90 60"
+                  backgroundColor="rgba(10, 10, 16, 0.95)"
+                  borderRadius={999}
+                  glowRadius={15}
+                  glowIntensity={1.0}
+                  coneSpread={30}
+                  colors={["#a855f7", "#6366f1", "#ec4899"]}
+                  fillOpacity={0.4}
+                >
+                  <div style={{
+                    padding: "10px 24px",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    gap: "10px",
+                    backgroundColor: "transparent",
+                    color: "#ffffff",
+                    whiteSpace: "nowrap"
+                  }}>
+                    <span style={{
+                      width: "8px",
+                      height: "8px",
+                      borderRadius: "50%",
+                      backgroundColor: "#22c55e",
+                      boxShadow: "0 0 8px #22c55e",
+                      display: "inline-block"
+                    }} />
+                    <span style={{
+                      fontSize: "14px",
+                      fontWeight: "600",
+                      letterSpacing: "0.2px",
+                      textShadow: "0 0 8px rgba(168, 85, 247, 0.4)"
+                    }}>
+                      Knock Knock... You're In.
+                    </span>
+                  </div>
+                </BorderGlow>
+              </div>
+            </>
+          )}
         </div>
       </div>
-      {success && (
-        <>
-          <style>{`
-            @keyframes slideInUp {
-              0% {
-                opacity: 0;
-                transform: translateY(40px) scale(0.9);
-              }
-              100% {
-                opacity: 1;
-                transform: translateY(0) scale(1);
-              }
-            }
-          `}</style>
-          <div style={{
-            position: "fixed",
-            bottom: "30px",
-            right: "0px",
-            zIndex: 99999,
-            animation: "slideInUp 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards"
-          }}>
-            <BorderGlow
-              animated={true}
-              glowColor="270 90 60"
-              backgroundColor="rgba(10, 10, 16, 0.95)"
-              borderRadius={999}
-              glowRadius={15}
-              glowIntensity={1.0}
-              coneSpread={30}
-              colors={['#a855f7', '#6366f1', '#ec4899']}
-              fillOpacity={0.4}
-            >
-              <div style={{
-                padding: "10px 24px",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                gap: "10px",
-                backgroundColor: "transparent",
-                color: "#ffffff",
-                whiteSpace: "nowrap"
-              }}>
-                <span style={{
-                  width: "8px",
-                  height: "8px",
-                  borderRadius: "50%",
-                  backgroundColor: "#22c55e",
-                  boxShadow: "0 0 8px #22c55e",
-                  display: "inline-block"
-                }} />
-                <span style={{
-                  fontSize: "14px",
-                  fontWeight: "600",
-                  letterSpacing: "0.2px",
-                  textShadow: "0 0 8px rgba(168, 85, 247, 0.4)"
-                }}>
-                  Knock Knock... You're In.
-                </span>
-              </div>
-            </BorderGlow>
-          </div>
-        </>
-      )}
     </div>
   );
 }

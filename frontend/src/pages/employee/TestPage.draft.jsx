@@ -165,9 +165,17 @@ export default function TestPage() {
 
   if (phase === "error") return (
     <BaseLayout>
-      <div style={{ ...glassCardStyle, textAlign: 'center', borderColor: 'rgba(248,113,113,0.3)' }}>
-        <p style={{ color: '#f87171', fontWeight: 'normal', marginBottom: '20px' }}>{error || "Something went wrong."}</p>
-        <button onClick={() => navigate("/dashboard")} style={secondaryButtonStyle}>Back to Dashboard</button>
+      <div style={{ ...glassCardStyle, textAlign: 'center', borderColor: 'rgba(248,113,113,0.3)', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '20px' }}>
+        <p style={{ color: '#f87171', fontWeight: 'normal', margin: 0 }}>{error || "Something went wrong."}</p>
+        {error && error.toLowerCase().includes("self-assessment") ? (
+          <button onClick={() => navigate("/self-assessment")} style={{ ...buttonStyle, margin: '0 auto' }}>
+            Go to Self Assessment
+          </button>
+        ) : (
+          <button onClick={() => navigate("/dashboard")} style={{ ...secondaryButtonStyle, margin: '0 auto' }}>
+            Back to Dashboard
+          </button>
+        )}
       </div>
     </BaseLayout>
   );

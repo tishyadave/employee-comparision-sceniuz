@@ -7,6 +7,7 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  margin: 0;
 }
 
 .tilted-card-mobile-alert {
@@ -29,6 +30,8 @@
 .tilted-card-inner {
   position: relative;
   transform-style: preserve-3d;
+  border-radius: 15px;
+  overflow: hidden;
 }
 
 .tilted-card-img {
@@ -38,16 +41,19 @@
   object-fit: cover;
   border-radius: 15px;
   will-change: transform;
-  transform: translateZ(0);
+  transform: none;
 }
 
 .tilted-card-overlay {
   position: absolute;
   top: 0;
   left: 0;
+  width: 100%;
+  height: 100%;
   z-index: 2;
   will-change: transform;
   transform: translateZ(30px);
+  pointer-events: none;
 }
 
 .tilted-card-caption {
@@ -55,11 +61,17 @@
   position: absolute;
   left: 0;
   top: 0;
-  border-radius: 4px;
-  background-color: #fff;
-  padding: 4px 10px;
-  font-size: 10px;
-  color: #2d2d2d;
+  border-radius: 8px;
+  background-color: rgba(15, 23, 42, 0.95);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  padding: 10px 14px;
+  font-size: 11px;
+  color: #ffffff;
   opacity: 0;
   z-index: 3;
+  font-family: monospace;
+  width: 220px;
+  line-height: 1.4;
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.5);
 }

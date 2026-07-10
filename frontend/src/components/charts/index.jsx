@@ -39,8 +39,8 @@ export function SelfVsActualChart({ data }) {
         <YAxis domain={[0, 100]} tick={{ fontSize: 12, fill: "#64748b" }} axisLine={false} tickLine={false} tickFormatter={(v) => `${v}%`} />
         <Tooltip content={<CustomTooltip />} cursor={{ fill: "#f8fafc" }} />
         <Legend wrapperStyle={{ fontSize: 12, paddingTop: 12 }} />
-        <Bar dataKey="selfScore" name="Self Score" fill={COLORS.self} radius={[4, 4, 0, 0]} maxBarSize={32} />
-        <Bar dataKey="actualScore" name="Actual Score" fill={COLORS.actual} radius={[4, 4, 0, 0]} maxBarSize={32} />
+        <Bar dataKey="selfScore" name="Self Assessment" fill={COLORS.self} radius={[4, 4, 0, 0]} maxBarSize={32} />
+        <Bar dataKey="actualScore" name="Test Score" fill={COLORS.actual} radius={[4, 4, 0, 0]} maxBarSize={32} />
       </BarChart>
     </ResponsiveContainer>
   );
@@ -79,7 +79,7 @@ export function SkillRadarChart({ data }) {
         <PolarAngleAxis dataKey="subject" tick={{ fontSize: 12, fill: "#64748b" }} />
         <PolarRadiusAxis domain={[0, 100]} tick={{ fontSize: 10, fill: "#94a3b8" }} tickCount={4} />
         <Radar name="Self Assessment" dataKey="self" stroke={COLORS.self} fill={COLORS.self} fillOpacity={0.15} strokeWidth={2} />
-        <Radar name="Actual Score" dataKey="actual" stroke={COLORS.actual} fill={COLORS.actual} fillOpacity={0.15} strokeWidth={2} />
+        <Radar name="Test Score" dataKey="actual" stroke={COLORS.actual} fill={COLORS.actual} fillOpacity={0.15} strokeWidth={2} />
         <Legend wrapperStyle={{ fontSize: 12 }} />
         <Tooltip content={<CustomTooltip />} />
       </RadarChart>

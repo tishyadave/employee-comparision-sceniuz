@@ -1,8 +1,8 @@
 // pages/SelfAssessmentPage.jsx
-import React, { useState, useMemo } from "react";
+import React, { useState, useMemo, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { selfAssessmentService } from "@/services";
-import { Alert, Spinner } from "@/components/ui";
+import { Alert, Spinner, PageLoader } from "@/components/ui";
 import { ChevronDown, ChevronRight, CheckCircle2 } from "lucide-react";
 import Iridescence from "@/component/Iridescence/Iridescence";
 import { ASSESSMENT_TOPICS } from "@/utils/assessmentTopics";
@@ -194,9 +194,29 @@ export default function SelfAssessmentPage() {
   );
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState("");
+  const [checking, setChecking] = useState(true);
+
+  useEffect(() => {
+    let active = true;
+    selfAssessmentService.getMine()
+      .then((res) => {
+        if (!active) return;
+        if (res.data?.assessment) {
+          navigate("/dashboard", { replace: true });
+        } else {
+          setChecking(false);
+        }
+      })
+      .catch(() => {
+        if (active) setChecking(false);
+      });
+    return () => { active = false; };
+  }, [navigate]);
 
   const completed = useMemo(() => Object.values(ratings).filter((v) => v > 0).length, [ratings]);
   const allDone = completed === TOTAL;
+
+  if (checking) return <PageLoader />;
 
   const handleChange = (subtopicId, val) => {
     setRatings((prev) => ({ ...prev, [subtopicId]: val }));

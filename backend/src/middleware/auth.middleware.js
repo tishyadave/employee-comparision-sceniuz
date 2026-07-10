@@ -30,10 +30,21 @@ const authenticate = async (req, res, next) => {
 
 const requireRole = (...roles) => (req, res, next) => {
   if (!req.user) return sendError(res, "Not authenticated", 401);
+  // SUPER_ADMIN is a superset — it passes any role check automatically
+  if (req.user.role === "SUPER_ADMIN") return next();
   if (!roles.includes(req.user.role)) {
     return sendError(res, "Insufficient permissions", 403);
   }
   next();
 };
 
-module.exports = { authenticate, requireRole };
+// Shorthand: only SUPER_ADMIN can pass
+const requireSuperAdmin = (req, res, next) => {
+  if (!req.user) return sendError(res, "Not authenticated", 401);
+  if (req.user.role !== "SUPER_ADMIN") {
+    return sendError(res, "Super Admin access required", 403);
+  }
+  next();
+};
+
+module.exports = { authenticate, requireRole, requireSuperAdmin };

@@ -15,7 +15,6 @@ function EmployeeForm({ initial = {}, onSave, onCancel, loading, error }) {
     email: initial.email || "",
     department: initial.department || "",
     password: "",
-    teamLead: initial.teamLead || "",
   });
   const isEdit = !!initial.id;
   const set = (k) => (e) => setForm((p) => ({ ...p, [k]: e.target.value }));
@@ -43,21 +42,12 @@ function EmployeeForm({ initial = {}, onSave, onCancel, loading, error }) {
             required
           />
         </div>
-        <div>
+        <div style={{ gridColumn: '1 / -1' }}>
           <label style={{ display: 'block', color: '#ffffff', fontWeight: 'bold', marginBottom: '8px' }}>Department</label>
           <input
             style={{ width: '100%', padding: '14px', backgroundColor: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.2)', borderRadius: '8px', color: '#ffffff', outline: 'none', boxSizing: 'border-box' }}
             value={form.department}
             onChange={set("department")}
-          />
-        </div>
-        <div>
-          <label style={{ display: 'block', color: '#ffffff', fontWeight: 'bold', marginBottom: '8px' }}>Team Lead</label>
-          <input
-            style={{ width: '100%', padding: '14px', backgroundColor: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.2)', borderRadius: '8px', color: '#ffffff', outline: 'none', boxSizing: 'border-box' }}
-            value={form.teamLead}
-            onChange={set("teamLead")}
-            placeholder="Enter team lead name"
           />
         </div>
         <div style={{ gridColumn: '1 / -1' }}>
@@ -215,7 +205,6 @@ export default function EmployeesPage() {
               <tr>
                 <th style={{ padding: '16px', borderBottom: '1px solid rgba(255,255,255,0.1)', color: '#ffffff', fontSize: '14px', textTransform: 'uppercase' }}>Employee</th>
                 <th style={{ padding: '16px', borderBottom: '1px solid rgba(255,255,255,0.1)', color: '#ffffff', fontSize: '14px', textTransform: 'uppercase' }}>Department</th>
-                <th style={{ padding: '16px', borderBottom: '1px solid rgba(255,255,255,0.1)', color: '#ffffff', fontSize: '14px', textTransform: 'uppercase' }}>Team Lead</th>
                 <th style={{ padding: '16px', borderBottom: '1px solid rgba(255,255,255,0.1)', color: '#ffffff', fontSize: '14px', textTransform: 'uppercase' }}>Self Score</th>
                 <th style={{ padding: '16px', borderBottom: '1px solid rgba(255,255,255,0.1)', color: '#ffffff', fontSize: '14px', textTransform: 'uppercase' }}>Test Score</th>
                 <th style={{ padding: '16px', borderBottom: '1px solid rgba(255,255,255,0.1)', color: '#ffffff', fontSize: '14px', textTransform: 'uppercase' }}>Status</th>
@@ -239,7 +228,6 @@ export default function EmployeesPage() {
                       </div>
                     </td>
                     <td style={{ padding: '16px', borderBottom: '1px solid rgba(255,255,255,0.05)', color: '#ffffff', fontWeight: '500' }}>{emp.department || "—"}</td>
-                    <td style={{ padding: '16px', borderBottom: '1px solid rgba(255,255,255,0.05)', color: '#ffffff', fontWeight: '500' }}>{emp.teamLead || "—"}</td>
                     <td style={{ padding: '16px', borderBottom: '1px solid rgba(255,255,255,0.05)' }}>
                       {selfDone
                         ? <span style={{ fontWeight: 'bold', color: '#ffffff' }}>{formatPercent(emp.selfAssessment.overallPercentage)}</span>

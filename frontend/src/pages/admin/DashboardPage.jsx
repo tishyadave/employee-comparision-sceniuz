@@ -22,9 +22,9 @@ export default function AdminDashboard() {
   const bentoCardData = [
     { title: "Total Employees", value: o.totalEmployees ?? "—", icon: Users, color: "#120F17" },
     { title: "Self Assessments", value: o.selfAssessmentsCompleted ?? "—", subtitle: "completed", icon: ClipboardCheck, color: "#120F17" },
-    { title: "Tests Completed", value: o.testsCompleted ?? "—", icon: FileText, color: "#120F17" },
-    { title: "Avg Self Score", value: o.avgSelfScore != null ? formatPercent(o.avgSelfScore) : "—", icon: TrendingUp, color: "#120F17" },
-    { title: "Avg Actual Score", value: o.avgActualScore != null ? formatPercent(o.avgActualScore) : "—", icon: Target, color: "#120F17" },
+    { title: "Tests Completed", value: o.testsCompleted ?? "—", subtitle: "completed", icon: FileText, color: "#120F17" },
+    { title: "Avg Self Assessment Score", value: o.avgSelfScore != null ? formatPercent(o.avgSelfScore) : "—", icon: TrendingUp, color: "#120F17" },
+    { title: "Avg Test Score", value: o.avgActualScore != null ? formatPercent(o.avgActualScore) : "—", icon: Target, color: "#120F17" },
     { title: "Avg Accuracy Index", value: o.avgAccuracyIndex != null ? formatPercent(o.avgAccuracyIndex) : "—", subtitle: "platform CAI", icon: Zap, color: "#120F17" }
   ];
 
@@ -79,7 +79,7 @@ export default function AdminDashboard() {
         {/* Self vs Actual chart */}
         <div className="card p-5 mt-10" style={{ backgroundColor: 'rgba(18, 15, 23, 0.7)', backdropFilter: 'blur(8px)', border: '1px solid rgba(255,255,255,0.1)' }}>
           <h3 style={{ color: "black" }}>.</h3>
-          <h2 className="section-title" style={{ color: 'white' }}>Self Score vs Actual Score — All Employees</h2>
+          <h2 className="section-title" style={{ color: 'white' }}>Self Assessment vs Test Score — Total Employees</h2>
           {cl ? (
             <div className="flex justify-center py-12"><Spinner /></div>
           ) : chartData.length > 0 ? (

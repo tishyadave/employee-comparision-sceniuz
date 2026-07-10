@@ -259,7 +259,7 @@ export default function AnalyticsPage() {
 
       {/* Charts Grid */}
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(400px, 1fr))', gap: '20px' }}>
-        <ChartCard title="Self Assessment vs Actual Score" subtitle="Per-employee comparison of perceived vs real skill level" icon={BrainCircuit} loading={l1}>
+        <ChartCard title="Self Assessment vs Test Score" subtitle="Per-employee comparison of perceived vs real skill level" icon={BrainCircuit} loading={l1}>
           {svAData.length > 0 ? <SelfVsActualChart data={svAData} /> : <p style={{ color: 'rgba(255,255,255,0.4)', textAlign: 'center', padding: '30px 0', fontWeight: 'normal' }}>No data available yet.</p>}
         </ChartCard>
 

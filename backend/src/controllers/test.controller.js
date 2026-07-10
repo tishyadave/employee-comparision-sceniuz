@@ -9,6 +9,14 @@ const startTest = async (req, res, next) => {
   try {
     const userId = req.user.id;
 
+    // Ensure self-assessment is completed first
+    const selfAssessment = await prisma.selfAssessment.findUnique({
+      where: { userId },
+    });
+    if (!selfAssessment) {
+      return sendError(res, "Please complete your self-assessment first.", 403);
+    }
+
     // One attempt only
     const existing = await prisma.testAttempt.findFirst({
       where: { userId, status: { in: ["SUBMITTED", "AUTO_SUBMITTED"] } },
@@ -104,15 +112,14 @@ const submitTest = async (req, res, next) => {
       ((correct / attempt.totalQuestions) * 100).toFixed(2)
     );
 
-    // Upsert responses + update attempt in a transaction
+    // Bulk delete and bulk insert in a transaction to minimize DB round-trips (prevents frontend timeout)
     await prisma.$transaction([
-      ...responseData.map((r) =>
-        prisma.response.upsert({
-          where: { attemptId_questionId: { attemptId: r.attemptId, questionId: r.questionId } },
-          update: { selectedAnswer: r.selectedAnswer, isCorrect: r.isCorrect },
-          create: r,
-        })
-      ),
+      prisma.response.deleteMany({
+        where: { attemptId },
+      }),
+      prisma.response.createMany({
+        data: responseData,
+      }),
       prisma.testAttempt.update({
         where: { id: attemptId },
         data: {
@@ -151,7 +158,10 @@ const getMyResults = async (req, res, next) => {
       },
     });
 
-    const selfAssessment = await prisma.selfAssessment.findUnique({ where: { userId } });
+    const selfAssessment = await prisma.selfAssessment.findUnique({
+      where: { userId },
+      include: { ratings: true },
+    });
 
     if (!attempt) return sendError(res, "No completed test found", 404);
 
@@ -170,16 +180,52 @@ const getMyResults = async (req, res, next) => {
       percentage: parseFloat(((correct / total) * 100).toFixed(1)),
     }));
 
-    // Skill-wise self vs actual (map topic names to self ratings)
-    const skillMapping = {
-      HTML: selfAssessment ? (selfAssessment.htmlRating / 5) * 100 : null,
-      CSS: selfAssessment ? (selfAssessment.cssRating / 5) * 100 : null,
-      JavaScript: selfAssessment ? (selfAssessment.jsRating / 5) * 100 : null,
-      React: selfAssessment ? (selfAssessment.reactRating / 5) * 100 : null,
-      "Problem Solving": selfAssessment
-        ? (selfAssessment.problemSolvingRating / 5) * 100
-        : null,
+    // Calculate average rating per topicId (1-5 mapped to 0-100)
+    const topicRatings = {};
+    if (selfAssessment && selfAssessment.ratings) {
+      const topicSums = {};
+      const topicCounts = {};
+      for (const r of selfAssessment.ratings) {
+        if (!topicSums[r.topicId]) {
+          topicSums[r.topicId] = 0;
+          topicCounts[r.topicId] = 0;
+        }
+        topicSums[r.topicId] += r.rating;
+        topicCounts[r.topicId]++;
+      }
+      for (const topicId of Object.keys(topicSums)) {
+        const avg = topicSums[topicId] / topicCounts[topicId];
+        topicRatings[topicId] = ((avg - 1) / 4) * 100;
+      }
+    }
+
+    const topicNameToId = {
+      "DAX - Intermediate": "dax_intermediate",
+      "Advanced Concepts (Optimization)": "dax_advanced",
+      "Microsoft Fabric": "microsoft_fabric",
+      "Power BI Embedded": "power_bi_embedded",
+      "Log Analytics & Monitoring": "log_analytics",
+      "Administration": "administration",
+      "Dax Basics": "dax_basic",
+      "Power BI Fundamentals": "power_bi_fundamentals",
+      "Data Source & Connectivity": "data_source_connectivity",
+      "Data Transformation": "data_transformation",
+      "Data Modeling": "data_modeling",
+      "Visualization & Report Design": "visualization_design",
+      "Security & Governance": "security_governance",
+      "Power BI Service": "power_bi_service",
     };
+
+    const getSelfRatingForTopic = (topicName) => {
+      const topicId = topicNameToId[topicName] || topicName.toLowerCase().replace(/[^a-z0-9]+/g, "_").replace(/^_+|_+$/g, "");
+      return topicRatings[topicId] !== undefined ? topicRatings[topicId] : null;
+    };
+
+    // Skill-wise self vs actual (map topic names to self ratings)
+    const skillMapping = {};
+    for (const t of topicBreakdown) {
+      skillMapping[t.topic] = getSelfRatingForTopic(t.topic);
+    }
 
     const cai = selfAssessment
       ? calculateCAI(selfAssessment.overallPercentage, attempt.scorePercentage)

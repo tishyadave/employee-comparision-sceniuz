@@ -6,9 +6,12 @@ const { validate } = require("../middleware/validate.middleware");
 
 const router = express.Router();
 
-const ratingValidators = ["htmlRating", "cssRating", "jsRating", "reactRating", "communicationRating", "problemSolvingRating"].map(
-  (field) => body(field).isInt({ min: 1, max: 5 }).withMessage(`${field} must be 1–5`)
-);
+const ratingValidators = [
+  body("ratings").isArray({ min: 1 }).withMessage("ratings must be a non-empty array"),
+  body("ratings.*.topicId").isString().notEmpty().withMessage("topicId is required"),
+  body("ratings.*.subtopicId").isString().notEmpty().withMessage("subtopicId is required"),
+  body("ratings.*.rating").isInt({ min: 1, max: 5 }).withMessage("rating must be an integer between 1 and 5"),
+];
 
 router.post("/", authenticate, requireRole("EMPLOYEE"), ratingValidators, validate, submitSelfAssessment);
 router.get("/me", authenticate, requireRole("EMPLOYEE"), getMySelfAssessment);

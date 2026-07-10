@@ -1,5 +1,5 @@
 import { useRef, useState } from 'react';
-import { motion, useMotionValue, useSpring } from 'motion/react';
+import { motion, useMotionValue, useSpring } from 'framer-motion';
 import './TiltedCard.css';
 
 const springValues = {
@@ -21,7 +21,9 @@ export default function TiltedCard({
   showMobileWarning = true,
   showTooltip = true,
   overlayContent = null,
-  displayOverlayContent = false
+  displayOverlayContent = false,
+  glowColor = 'rgba(255,255,255,0.15)',
+  objectFit = 'cover'
 }) {
   const ref = useRef(null);
 
@@ -96,7 +98,8 @@ export default function TiltedCard({
           height: imageHeight,
           rotateX,
           rotateY,
-          scale
+          scale,
+          boxShadow: glowColor ? `0 0 25px 2px ${glowColor}` : undefined
         }}
       >
         <motion.img
@@ -105,7 +108,8 @@ export default function TiltedCard({
           className="tilted-card-img"
           style={{
             width: imageWidth,
-            height: imageHeight
+            height: imageHeight,
+            objectFit: objectFit
           }}
         />
 

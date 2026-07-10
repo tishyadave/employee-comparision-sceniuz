@@ -178,15 +178,56 @@ export default function EmployeeDashboard() {
             {/* Score rings */}
             {(d.selfScore != null || d.actualScore != null) && (
                 <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", gap: "16px" }}>
-                    <div style={{ background: "rgba(15,20,32,0.9)", border: "1px solid rgba(168,85,247,0.2)", borderRadius: "14px", padding: "32px", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center" }}>
-                        <ScoreRing value={d.selfScore ?? 0} label="Self assessment" size={130} color="#a855f7" />
-                    </div>
-                    <div style={{ background: "rgba(15,20,32,0.9)", border: "1px solid rgba(16,185,129,0.2)", borderRadius: "14px", padding: "32px", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center" }}>
-                        <ScoreRing value={d.actualScore ?? 0} label="Actual score" size={130} color="#10b981" />
-                    </div>
-                    <div style={{ background: "rgba(15,20,32,0.9)", border: "1px solid rgba(168,85,247,0.2)", borderRadius: "14px", padding: "32px", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center" }}>
-                        <CAIMeter value={d.cai} />
-                    </div>
+                    <BorderGlow
+                        edgeSensitivity={30}
+                        glowColor="274 95 75"
+                        backgroundColor="rgba(15,20,32,0.9)"
+                        borderRadius={14}
+                        glowRadius={30}
+                        glowIntensity={0.8}
+                        coneSpread={25}
+                        colors={['#c084fc', '#a855f7', '#8b5cf6']}
+                        animated={false}
+                        className="w-full"
+                    >
+                        <div style={{ padding: "32px", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", width: "100%", boxSizing: "border-box" }}>
+                            <ScoreRing value={d.selfScore ?? 0} label="Self assessment" size={130} color="#a855f7" />
+                        </div>
+                    </BorderGlow>
+
+                    <BorderGlow
+                        edgeSensitivity={30}
+                        glowColor="159 84 39"
+                        backgroundColor="rgba(15,20,32,0.9)"
+                        borderRadius={14}
+                        glowRadius={30}
+                        glowIntensity={0.8}
+                        coneSpread={25}
+                        colors={['#10b981', '#059669', '#34d399']}
+                        animated={false}
+                        className="w-full"
+                    >
+                        <div style={{ padding: "32px", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", width: "100%", boxSizing: "border-box" }}>
+                            <ScoreRing value={d.actualScore ?? 0} label="MCQ Test Score" size={130} color="#10b981" />
+                        </div>
+                    </BorderGlow>
+
+                    <BorderGlow
+                        edgeSensitivity={30}
+                        glowColor={getGlowProps(caiColor(d.cai)).glowColor}
+                        backgroundColor="rgba(15,20,32,0.9)"
+                        borderRadius={14}
+                        glowRadius={30}
+                        glowIntensity={0.8}
+                        coneSpread={25}
+                        colors={getGlowProps(caiColor(d.cai)).colors}
+                        animated={false}
+                        className="w-full"
+                    >
+                        <div style={{ padding: "32px", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", width: "100%", boxSizing: "border-box" }}>
+                            <CAIMeter value={d.cai} />
+                        </div>
+                    </BorderGlow>
                 </div>
             )}
 
@@ -201,14 +242,14 @@ export default function EmployeeDashboard() {
                     <StepCard
                         icon={Brain}
                         title="Self assessment"
-                        description="Rate yourself on 6 key skills: HTML, CSS, JS, React, Communication, Problem Solving"
+                        description="Rate yourself on Power BI key skills: Fundamentals, Transformations, DAX , Reporting & Visualizations , Fabric and more...."
                         to="/self-assessment"
                         done={d.selfAssessmentCompleted}
                     />
                     <StepCard
                         icon={ClipboardCheck}
                         title="MCQ test"
-                        description="Take the 20-question timed test to measure your actual knowledge"
+                        description="Take the 50-question timed test to measure your actual knowledge"
                         to="/test"
                         done={d.testCompleted}
                         disabled={!d.selfAssessmentCompleted}

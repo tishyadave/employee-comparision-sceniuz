@@ -1,5 +1,5 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "@/context/AuthContext";
 import { useApi } from "@/hooks/useApi";
 import { leaderboardService } from "@/services";
@@ -104,6 +104,38 @@ export default function LeaderboardPage() {
   const { user } = useAuth();
   const { data, loading, error } = useApi(() => leaderboardService.get());
   const leaderboard = data?.leaderboard ?? [];
+
+  const navigate = useNavigate();
+  const [clickCount, setClickCount] = React.useState(0);
+  const [speech, setSpeech] = React.useState("");
+  const [showSpeech, setShowSpeech] = React.useState(false);
+  const [isAccessing, setIsAccessing] = React.useState(false);
+
+  const dialogs = [
+    "Meow.",
+    "Hey... personal space.",
+    "Seriously?",
+    "You're persistent, aren't you?",
+    "... Welcome, curious human."
+  ];
+
+  const handleCatClick = () => {
+    if (isAccessing) return;
+    const nextCount = clickCount + 1;
+    setClickCount(nextCount);
+    
+    if (nextCount <= 5) {
+      setSpeech(dialogs[nextCount - 1]);
+      setShowSpeech(true);
+    }
+    
+    if (nextCount === 5) {
+      setIsAccessing(true);
+      setTimeout(() => {
+        navigate("/secret");
+      }, 2000);
+    }
+  };
 
   return (
     <div style={{ position: 'relative', minHeight: '100vh', padding: '32px 20px', display: 'flex', flexDirection: 'column', gap: '24px' }}>
@@ -246,6 +278,82 @@ export default function LeaderboardPage() {
           </table>
         </div>
       )}
+
+      {/* Tiny Cat Easter Egg */}
+      <div style={{
+        position: 'fixed',
+        bottom: '20px',
+        right: '20px',
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'flex-end',
+        zIndex: 1000,
+        fontFamily: 'monospace'
+      }}>
+        {showSpeech && (
+          <div style={{
+            backgroundColor: 'rgba(15, 18, 23, 0.95)',
+            border: isAccessing ? '1px solid #10b981' : '1px solid rgba(168, 85, 247, 0.4)',
+            borderRadius: '12px',
+            padding: '10px 14px',
+            color: isAccessing ? '#10b981' : '#ffffff',
+            fontSize: '12px',
+            marginBottom: '8px',
+            maxWidth: '200px',
+            boxShadow: isAccessing ? '0 0 15px rgba(16, 185, 129, 0.3)' : '0 4px 12px rgba(0,0,0,0.5)',
+            position: 'relative',
+            whiteSpace: 'pre-line'
+          }}>
+            {isAccessing ? (
+              <span style={{ fontWeight: 'bold' }}>
+                ACCESS GRANTED<br />
+                Loading Developer's Hideout...
+              </span>
+            ) : speech}
+            <div style={{
+              position: 'absolute',
+              bottom: '-6px',
+              right: '20px',
+              width: '10px',
+              height: '10px',
+              backgroundColor: 'rgba(15, 18, 23, 0.95)',
+              borderBottom: isAccessing ? '1px solid #10b981' : '1px solid rgba(168, 85, 247, 0.4)',
+              borderRight: isAccessing ? '1px solid #10b981' : '1px solid rgba(168, 85, 247, 0.4)',
+              transform: 'rotate(45deg)'
+            }} />
+          </div>
+        )}
+        <button
+          onClick={handleCatClick}
+          style={{
+            background: 'none',
+            border: 'none',
+            cursor: 'pointer',
+            fontSize: '13px',
+            color: isAccessing ? '#10b981' : 'rgba(255,255,255,0.4)',
+            userSelect: 'none',
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            transition: 'color 0.2s, transform 0.2s',
+            outline: 'none'
+          }}
+          onMouseEnter={(e) => {
+            if (!isAccessing) e.currentTarget.style.color = '#c084fc';
+            e.currentTarget.style.transform = 'scale(1.1)';
+          }}
+          onMouseLeave={(e) => {
+            if (!isAccessing) e.currentTarget.style.color = 'rgba(255,255,255,0.4)';
+            e.currentTarget.style.transform = 'scale(1)';
+          }}
+        >
+          <pre style={{ margin: 0, lineHeight: 1.1, fontFamily: 'monospace' }}>
+{`  /\\_/\\
+ ( o.o )
+  > ^ <`}
+          </pre>
+        </button>
+      </div>
     </div>
   );
 }

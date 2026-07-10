@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from "react";
-import { cn, getInitials } from "@/utils/helpers";
+import { cn, getInitials, formatPercent } from "@/utils/helpers";
 import { X, AlertCircle, CheckCircle, Info, AlertTriangle } from "lucide-react";
 
 // ── Spinner ────────────────────────────────────────────────────────────────────
@@ -313,8 +313,8 @@ export function ScoreRing({ value, label, size = 130, color = "#a855f7" }) {
             style={{ transition: "stroke-dashoffset 1s ease-in-out" }}
           />
         </svg>
-        <div style={{ position: "absolute", inset: 0, display: "flex", alignItems: "center", justifyContent: "center", fontSize: "26px", fontWeight: 500, color: "#ffffff", fontFamily: "monospace" }}>
-          {value}%
+        <div style={{ position: "absolute", inset: 0, display: "flex", alignItems: "center", justifyContent: "center", fontSize: "22px", fontWeight: 500, color: "#ffffff", fontFamily: "monospace" }}>
+          {formatPercent(value)}
         </div>
       </div>
       {label && <div style={{ color: "rgba(148,163,184,0.65)", fontSize: "13px" }}>{label}</div>}

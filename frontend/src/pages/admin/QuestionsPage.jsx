@@ -21,7 +21,7 @@ function QuestionForm({ initial = BLANK_FORM, onSave, onCancel, loading, error }
     <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
       {error && <Alert type="error" message={error} />}
       <textarea
-        style={{ width: '100%', padding: '14px', backgroundColor: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.2)', borderRadius: '8px', color: '#ffffff', outline: 'none' }}
+        style={{ width: '100%', padding: '14px', backgroundColor: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.2)', borderRadius: '8px', color: '#ffffff', outline: 'none', boxSizing: 'border-box' }}
         rows={3}
         value={form.questionText}
         onChange={set("questionText")}
@@ -31,7 +31,7 @@ function QuestionForm({ initial = BLANK_FORM, onSave, onCancel, loading, error }
         {OPTION_KEYS.map((key) => (
           <input
             key={key}
-            style={{ width: '100%', padding: '14px', backgroundColor: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.2)', borderRadius: '8px', color: '#ffffff', outline: 'none' }}
+            style={{ width: '100%', padding: '14px', backgroundColor: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.2)', borderRadius: '8px', color: '#ffffff', outline: 'none', boxSizing: 'border-box' }}
             value={form[`option${key}`]}
             onChange={set(`option${key}`)}
             placeholder={`Option ${key}`}
@@ -39,10 +39,10 @@ function QuestionForm({ initial = BLANK_FORM, onSave, onCancel, loading, error }
         ))}
       </div>
       <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '24px' }}>
-        <select style={{ padding: '14px', backgroundColor: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.2)', borderRadius: '8px', color: '#ffffff', outline: 'none' }} value={form.correctAnswer} onChange={set("correctAnswer")}>
+        <select style={{ padding: '14px', backgroundColor: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.2)', borderRadius: '8px', color: '#ffffff', outline: 'none', boxSizing: 'border-box', width: '100%' }} value={form.correctAnswer} onChange={set("correctAnswer")}>
           {CORRECT_OPTIONS.map((o) => <option key={o} value={o} style={{ color: '#000' }}>Option {o}</option>)}
         </select>
-        <input style={{ padding: '14px', backgroundColor: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.2)', borderRadius: '8px', color: '#ffffff', outline: 'none' }} value={form.topic} onChange={set("topic")} placeholder="Topic" />
+        <input style={{ padding: '14px', backgroundColor: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.2)', borderRadius: '8px', color: '#ffffff', outline: 'none', boxSizing: 'border-box', width: '100%' }} value={form.topic} onChange={set("topic")} placeholder="Topic" />
       </div>
       <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '20px' }}>
         <button onClick={onCancel} style={{ padding: '12px 24px', borderRadius: '8px', color: '#ffffff', backgroundColor: 'rgba(255,255,255,0.1)', border: 'none', cursor: 'pointer' }}>Cancel</button>
@@ -96,8 +96,7 @@ export default function QuestionsPage() {
       <div style={{ textAlign: 'center' }}>
         <h3 style={{ color: "black" }}> . </h3>
         <h1 style={{ fontSize: '42px', color: '#ffffff', margin: 0 }}>Question Bank</h1>
-        <p style={{ color: "black" }}> . </p>
-        <p style={{ fontSize: '20px', color: '#ffffff', marginTop: '8px' }}>{data?.count ?? 0} questions across {topics.length} topics</p>
+        <p style={{ fontSize: '20px', color: '#ffffff', marginTop: '8px', marginBottom: 0 }}>{(data?.questions ?? []).length} questions across {topics.length} topics</p>
         <p style={{ color: "black" }}> . </p>
         <button
           onClick={() => setModal({ mode: "create" })}

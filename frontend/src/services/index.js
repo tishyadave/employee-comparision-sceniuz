@@ -56,4 +56,14 @@ export const adminService = {
   createEmployee: (data) => api.post("/admin/employees", data),
   updateEmployee: (id, data) => api.put(`/admin/employees/${id}`, data),
   deleteEmployee: (id) => api.delete(`/admin/employees/${id}`),
+  // Helper: list of all admins for team-lead dropdown
+  getAdminsList: () => api.get("/admin/admins-list"),
 };
+
+export const superAdminService = {
+  getAdmins: (params) => api.get("/admin/admins", { params }),
+  createAdmin: (data) => api.post("/admin/admins", data),
+  updateAdmin: (id, data) => api.put(`/admin/admins/${id}`, data),
+  deleteAdmin: (id) => api.delete(`/admin/admins/${id}`),
+};
+
